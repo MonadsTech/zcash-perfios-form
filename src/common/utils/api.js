@@ -1,0 +1,6 @@
+export const API_STATUS = {
+  IDLE: "IDLE",
+  LOADING: "LOADING",
+  RESOLVED: "RESOLVED",
+  REJECTED: "REJECTED",
+};
