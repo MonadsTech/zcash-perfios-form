@@ -14,14 +14,20 @@ const layout = {
 export const PerfiosForm = (props) => {
   const { payloadData } = props;
 
-  const onFinish = (values) => {
-    console.log(values);
-  };
-
   return (
-    <Form {...layout} name="nest-messages" onFinish={onFinish}>
+    <form
+      action="https://demo.perfios.com/KuberaVault/insights/start"
+      method="POST"
+    >
       {Object.keys(payloadData).map((dataField) => {
-        return <Input defaultValue={payloadData[dataField]} disabled hidden />;
+        return (
+          <Input
+            key={dataField}
+            name={dataField}
+            defaultValue={payloadData[dataField]}
+            hidden
+          />
+        );
       })}
 
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 10 }}>
@@ -29,6 +35,6 @@ export const PerfiosForm = (props) => {
           Submit
         </Button>
       </Form.Item>
-    </Form>
+    </form>
   );
 };

@@ -21,6 +21,7 @@ export const UserDataForm = (props) => {
       {Object.keys(userData).map((dataField) => {
         return (
           <Form.Item
+            key={dataField}
             name={["user", dataField]}
             label={dataField}
             rules={[
