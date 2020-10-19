@@ -14,8 +14,17 @@ const layout = {
 export const PerfiosForm = (props) => {
   const { payloadData } = props;
 
+  const formRef = React.useRef();
+
+  React.useEffect(() => {
+    if (formRef.current) {
+      formRef.current.submit();
+    }
+  }, []);
+
   return (
     <form
+      ref={formRef}
       action="https://demo.perfios.com/KuberaVault/insights/start"
       method="POST"
     >
@@ -29,12 +38,6 @@ export const PerfiosForm = (props) => {
           />
         );
       })}
-
-      <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 10 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
     </form>
   );
 };

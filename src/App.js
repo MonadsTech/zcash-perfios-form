@@ -15,8 +15,8 @@ function App() {
   const [perfiosStartApiStatus, setPerfiosStartApiStatus] = React.useState(
     API_STATUS.IDLE
   );
-  console.log("App -> userData", userData);
-  console.log("App -> apiXmlData", apiXmlData);
+  // console.log("App -> userData", userData);
+  // console.log("App -> apiXmlData", apiXmlData);
 
   React.useEffect(() => {
     setUserData(getAllQueryParams());
@@ -59,7 +59,7 @@ function App() {
         {/* Hello World */}
         {/* <pre>{FormData}</pre> */}
         {/* {userData && Object.keys(userData).map((k) => `${k}=${userData[k]}&`)} */}
-        {hasUserData && <UserDataForm userData={userData} />}
+        {/* {hasUserData && <UserDataForm userData={userData} />} */}
         {perfiosStartApiStatus === API_STATUS.LOADING && <LoadingIndicator />}
         {perfiosStartApiStatus === API_STATUS.RESOLVED && hasApiXmlData && (
           <PerfiosForm payloadData={apiXmlData} />

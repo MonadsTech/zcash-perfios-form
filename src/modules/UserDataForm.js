@@ -30,7 +30,7 @@ export const UserDataForm = (props) => {
               },
             ]}
           >
-            <Input defaultValue={userData[dataField]} disabled />
+            <Input defaultValue={userData[dataField]} disabled hidden />
           </Form.Item>
         );
       })}
