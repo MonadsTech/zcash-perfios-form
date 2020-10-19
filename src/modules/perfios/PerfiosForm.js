@@ -1,33 +1,21 @@
 import React from "react";
 import { Input } from "antd";
 
-// const layout = {
-//   labelCol: {
-//     span: 4,
-//     offset: 2,
-//   },
-//   wrapperCol: {
-//     span: 12,
-//   },
-// };
+const PERFIOS_URL = `https://demo.perfios.com/KuberaVault/insights/start`;
 
 export const PerfiosForm = (props) => {
   const { payloadData } = props;
 
-  const formRef = React.useRef();
+  const formRef = React.createRef();
 
   React.useEffect(() => {
     if (formRef.current) {
       formRef.current.submit();
     }
-  }, []);
+  }, [formRef]);
 
   return (
-    <form
-      ref={formRef}
-      action="https://demo.perfios.com/KuberaVault/insights/start"
-      method="POST"
-    >
+    <form ref={formRef} action={PERFIOS_URL} method="POST">
       {Object.keys(payloadData).map((dataField) => {
         return (
           <Input
