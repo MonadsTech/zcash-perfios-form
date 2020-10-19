@@ -1,15 +1,15 @@
 import React from "react";
-import { Form, Input, Button } from "antd";
+import { Input } from "antd";
 
-const layout = {
-  labelCol: {
-    span: 4,
-    offset: 2,
-  },
-  wrapperCol: {
-    span: 12,
-  },
-};
+// const layout = {
+//   labelCol: {
+//     span: 4,
+//     offset: 2,
+//   },
+//   wrapperCol: {
+//     span: 12,
+//   },
+// };
 
 export const PerfiosForm = (props) => {
   const { payloadData } = props;

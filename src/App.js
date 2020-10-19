@@ -5,7 +5,7 @@ import { API_STATUS } from "./common/utils/api";
 import { getAllQueryParams } from "./common/utils/url";
 import { PerfiosForm } from "./modules/PerfiosForm";
 
-import { UserDataForm } from "./modules/UserDataForm";
+// import { UserDataForm } from "./modules/UserDataForm";
 
 // http://localhost:3000/?email=ankurj630@gmail.com&loan_amount=1000&loan_duration=24&loan_type=Home&callback_url=https://google.com&txn_id=PQ1342687YTX#edfg
 
@@ -44,7 +44,7 @@ function App() {
     }
   }, [setPerfiosStartApiStatus, userData]);
 
-  const hasUserData = userData && !!Object.keys(userData).length;
+  // const hasUserData = userData && !!Object.keys(userData).length;
   const hasApiXmlData = apiXmlData && !!Object.keys(apiXmlData).length;
 
   return (
