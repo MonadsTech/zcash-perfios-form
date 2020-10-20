@@ -8,6 +8,15 @@ import { PerfiosForm } from "../modules/perfios/PerfiosForm";
 // import { UserDataForm } from "./modules/UserDataForm";
 // http://localhost:3000/perfios?email=ankurj630@gmail.com&loan_amount=1000&loan_duration=24&loan_type=Home&callback_url=https://google.com&txn_id=PQ1342687YTX#edfg
 
+const dummyUserData = {
+  email: "ankurj630@gmail.com",
+  loan_amount: 1000,
+  loan_duration: 24,
+  loan_type: "Home",
+  callback_url: window.location.href,
+  txn_id: "PQ1342687YTX",
+};
+
 const PerfiosScreen = () => {
   const [userData, setUserData] = React.useState(null);
   const [apiXmlData, setApiXmlData] = React.useState(null);
@@ -16,7 +25,15 @@ const PerfiosScreen = () => {
   );
 
   React.useEffect(() => {
-    setUserData(getAllQueryParams());
+    const queryData = getAllQueryParams();
+    if (window.UserData) {
+      setUserData(window.UserData);
+    } else if (queryData.dummy === 1) {
+      setUserData(dummyUserData);
+    } else if (queryData.dummy === 2) {
+      delete queryData.dummy;
+      setUserData(queryData);
+    }
   }, []);
 
   React.useEffect(() => {
@@ -46,6 +63,7 @@ const PerfiosScreen = () => {
 
   return (
     <div className="App">
+      <code>{JSON.stringify(window.UserData)}</code>
       <Layout
         style={{
           padding: "50px 20px",
@@ -55,9 +73,9 @@ const PerfiosScreen = () => {
       >
         {/* {hasUserData && <UserDataForm userData={userData} />} */}
         {perfiosStartApiStatus === API_STATUS.LOADING && <LoadingIndicator />}
-        {perfiosStartApiStatus === API_STATUS.RESOLVED && hasApiXmlData && (
+        {/* {perfiosStartApiStatus === API_STATUS.RESOLVED && hasApiXmlData && (
           <PerfiosForm payloadData={apiXmlData} />
-        )}
+        )} */}
         {(perfiosStartApiStatus === API_STATUS.REJECTED ||
           (perfiosStartApiStatus === API_STATUS.RESOLVED &&
             !hasApiXmlData)) && (
