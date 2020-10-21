@@ -9,13 +9,24 @@ import { PerfiosForm } from "../modules/perfios/PerfiosForm";
 // http://localhost:3000/perfios?email=ankurj630@gmail.com&loan_amount=1000&loan_duration=24&loan_type=Home&callback_url=https://google.com&txn_id=PQ1342687YTX#edfg
 
 const dummyUserData = {
-  email: "ankurj630@gmail.com",
+  email: "vpankaj1998@gmail.com",
   loan_amount: 1000,
   loan_duration: 24,
   loan_type: "Home",
   callback_url: "https://google.com",
-  txn_id: "PQ1342687YTX",
+  txn_id: "a0G0w000000qOqEEAU",
 };
+
+// const userData = {
+//   email: "vpankaj1998o@fesnjne.com" || "",
+//   // email: optyData.Account.PersonEmail || "",
+//   loan_amount: 1000,
+//   loan_duration: 24,
+//   loan_type: "Home",
+//   callback_url: "https://google.com",
+//   txn_id: "a0G0w000000qOqEEAU",
+//   // txn_id: 'PQ1342687YTX',
+// };
 
 const PerfiosScreen = () => {
   const [userData, setUserData] = React.useState(null);
@@ -44,7 +55,6 @@ const PerfiosScreen = () => {
 
   React.useEffect(() => {
     if (userData) {
-      console.log("PerfiosScreen -> userData", userData);
       setPerfiosStartApiStatus(API_STATUS.LOADING);
       fetch("https://zavron.byts.in/v1/payment/perfios/start", {
         method: "POST",
@@ -70,7 +80,8 @@ const PerfiosScreen = () => {
 
   return (
     <div className="App">
-      <code>{JSON.stringify(window.UserData)}</code>
+      {/* <code>{JSON.stringify(userData)}</code> */}
+      {/* <code>{JSON.stringify(window.Perfios)}</code> */}
       <Layout
         style={{
           padding: "50px 20px",
