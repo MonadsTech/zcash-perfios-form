@@ -3,7 +3,7 @@ import React from "react";
 import { LoadingIndicator } from "../common/components/LoadingIndicator";
 import { API_STATUS } from "../common/utils/api";
 import { getAllQueryParams } from "../common/utils/url";
-// import { PerfiosForm } from "../modules/perfios/PerfiosForm";
+import { PerfiosForm } from "../modules/perfios/PerfiosForm";
 
 // import { UserDataForm } from "./modules/UserDataForm";
 // http://localhost:3000/perfios?email=ankurj630@gmail.com&loan_amount=1000&loan_duration=24&loan_type=Home&callback_url=https://google.com&txn_id=PQ1342687YTX#edfg
@@ -13,7 +13,7 @@ const dummyUserData = {
   loan_amount: 1000,
   loan_duration: 24,
   loan_type: "Home",
-  callback_url: window.location.href,
+  callback_url: "https://google.com",
   txn_id: "PQ1342687YTX",
 };
 
@@ -26,18 +26,25 @@ const PerfiosScreen = () => {
 
   React.useEffect(() => {
     const queryData = getAllQueryParams();
-    if (window.UserData) {
-      setUserData(window.UserData);
-    } else if (queryData.dummy === 1) {
-      setUserData(dummyUserData);
-    } else if (queryData.dummy === 2) {
+    console.log("PerfiosScreen -> queryData", queryData);
+
+    let UserData = window.Perfios?.UserData || {};
+
+    if (queryData.dummy === "1") {
       delete queryData.dummy;
-      setUserData(queryData);
+      setUserData({
+        ...dummyUserData,
+        ...UserData,
+        ...queryData,
+      });
+    } else if (UserData) {
+      setUserData(UserData);
     }
   }, []);
 
   React.useEffect(() => {
     if (userData) {
+      console.log("PerfiosScreen -> userData", userData);
       setPerfiosStartApiStatus(API_STATUS.LOADING);
       fetch("https://zavron.byts.in/v1/payment/perfios/start", {
         method: "POST",
@@ -73,9 +80,9 @@ const PerfiosScreen = () => {
       >
         {/* {hasUserData && <UserDataForm userData={userData} />} */}
         {perfiosStartApiStatus === API_STATUS.LOADING && <LoadingIndicator />}
-        {/* {perfiosStartApiStatus === API_STATUS.RESOLVED && hasApiXmlData && (
+        {perfiosStartApiStatus === API_STATUS.RESOLVED && hasApiXmlData && (
           <PerfiosForm payloadData={apiXmlData} />
-        )} */}
+        )}
         {(perfiosStartApiStatus === API_STATUS.REJECTED ||
           (perfiosStartApiStatus === API_STATUS.RESOLVED &&
             !hasApiXmlData)) && (
