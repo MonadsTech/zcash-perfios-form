@@ -171,25 +171,31 @@ const EnachScreen = () => {
     const configJson = {
       tarCall: false,
       features: {
-        showPGResponseMsg: true,
+        // showPGResponseMsg: true,
         enableAbortResponse: true,
-        enableExpressPay: false,
-        payDetailsAtMerchantEnd: true,
-        enableSI: false,
-        showAllModesWithSI: false,
-        siDetailsAtMerchantEnd: false,
-        hideSIDetails: false,
-        enableDebitDay: false,
-        expandSIDetails: false,
-        hideSIConfirmation: false,
-        showSIResponseMsg: false,
         enableNewWindowFlow: false,
+        // enableExpressPay: false,
+        // payDetailsAtMerchantEnd: true,
+        // enableSI: false,
+        // showAllModesWithSI: false,
+        // siDetailsAtMerchantEnd: false,
+        // hideSIDetails: false,
+        // enableDebitDay: false,
+        // expandSIDetails: false,
+        // hideSIConfirmation: false,
+        // showSIResponseMsg: false,
       },
       consumerData: config,
     };
-    console.log("EnachScreen: openENACHModal payload ", configJson);
+    console.log(
+      "EnachScreen: openENACHModal payload ",
+      JSON.stringify(configJson, null, 4)
+    );
 
     window.$.pnCheckout(configJson);
+    if (configJson.features.enableNewWindowFlow) {
+      window.pnCheckoutShared.openNewWindow();
+    }
   };
 
   /**
@@ -251,7 +257,6 @@ function getENACHConfig({
   return {
     deviceId: "WEBSH2",
     token,
-    enableNewWindowFlow: false,
     returnUrl: "https://postman-echo.com/post",
     responseHandler,
     paymentMode: "netBanking",
@@ -269,8 +274,8 @@ function getENACHConfig({
     consumerMobileNo,
     consumerEmailId,
     txnId,
-    txnType: "SALE",
-    txnSubType: "DEBIT",
+    // txnType: "SALE",
+    // txnSubType: "DEBIT",
     items: [
       {
         itemId: "First",
