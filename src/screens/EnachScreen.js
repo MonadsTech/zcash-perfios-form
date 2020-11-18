@@ -2,7 +2,7 @@ import { Layout, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { API_STATUS } from "../common/utils/api";
 import { getAllQueryParams } from "../common/utils/url";
-import { EnachUserForm } from "../modules/enach/EnachUserForm";
+// import { EnachUserForm } from "../modules/enach/EnachUserForm";
 import { Helmet } from "react-helmet";
 import { to } from "await-to-js";
 import { v4 as uuidV4 } from "uuid";
@@ -38,6 +38,7 @@ const getToken = (payload) => {
 
 const EnachScreen = () => {
   const [initialFormData, setInitialFormData] = useState(INITIAL_VALUES);
+  console.log("initialFormData", initialFormData);
   const [status, setStatus] = useState(API_STATUS.IDLE);
 
   /**
@@ -58,10 +59,15 @@ const EnachScreen = () => {
     console.log("EnachScreen -> queryData", queryData);
 
     const dataFromApp = window.Enach?.consumerData || {};
-    setInitialFormData({
+    setInitialFormData((oldValue) => ({
+      ...oldValue,
       ...dataFromApp,
       ...queryData,
-    });
+    }));
+    // setInitialFormData({
+    //   ...dataFromApp,
+    //   ...queryData,
+    // });
   }, []);
 
   /**
@@ -77,38 +83,43 @@ const EnachScreen = () => {
    * }} formValues
    * @returns {void}
    */
-  const handleFinish = async (formValues) => {
-    console.log("handleFinish -> formValues", formValues);
-    // const txnId = "3ba0bd3a5c7d42908ee25dcb2f57e29b";
-    const txnId = uuidV4().split("-").join("");
-    const {
-      accountNo,
-      consumerMobileNo,
-      consumerEmailId,
-      accountHolderName,
-      ifscCode,
-    } = formValues;
-    const token = await getTokenUsingFormData({
-      txnId,
-      accountNo,
-      consumerMobileNo,
-      consumerEmailId,
-    });
-    const finalConfig = getENACHConfig({
-      token,
-      responseHandler,
-      consumerMobileNo,
-      consumerEmailId,
-      bankCode: 9480,
-      accountNo,
-      accountHolderName,
-      ifscCode,
-      txnId,
-    });
-    if (token) {
-      openENACHModal(finalConfig);
-    }
-  };
+  const handleFinish = React.useCallback(
+    async (formValuesForm) => {
+      const formValues = initialFormData;
+      console.log("handleFinish -> formValues", formValues);
+      console.log("handleFinish -> formValues", initialFormData);
+      // const txnId = "3ba0bd3a5c7d42908ee25dcb2f57e29b";
+      const txnId = uuidV4().split("-").join("");
+      const {
+        accountNo,
+        consumerMobileNo,
+        consumerEmailId,
+        accountHolderName,
+        ifscCode,
+      } = formValues;
+      const token = await getTokenUsingFormData({
+        txnId,
+        accountNo,
+        consumerMobileNo,
+        consumerEmailId,
+      });
+      const finalConfig = getENACHConfig({
+        token,
+        responseHandler,
+        consumerMobileNo,
+        consumerEmailId,
+        bankCode: 9480,
+        accountNo,
+        accountHolderName,
+        ifscCode,
+        txnId,
+      });
+      if (token) {
+        openENACHModal(finalConfig);
+      }
+    },
+    [initialFormData]
+  );
 
   /**
    * Fetches token from Zavron backend
@@ -198,6 +209,18 @@ const EnachScreen = () => {
     }
   };
 
+  React.useEffect(() => {
+    setStatus(API_STATUS.LOADING);
+    const jQueryWatcher = setInterval(() => {
+      if (window.$ && window.$.pnCheckout) {
+        clearInterval(jQueryWatcher);
+        handleFinish();
+      }
+    }, 100);
+
+    return () => clearInterval(jQueryWatcher);
+  }, [handleFinish]);
+
   /**
    * TODO: Implement me!
    * Callback from ENACH SDK
@@ -227,11 +250,11 @@ const EnachScreen = () => {
           src="https://www.paynimo.com/paynimocheckout/server/lib/checkout.js"
         ></script>
       </Helmet>
-      <EnachUserForm
+      {/* <EnachUserForm
         initialValues={initialFormData}
         loading={status === API_STATUS.LOADING}
         onFinish={handleFinish}
-      />
+      /> */}
       {status === API_STATUS.REJECTED && (
         <p style={{ color: "red" }}>
           Some error occurred, please contact support
