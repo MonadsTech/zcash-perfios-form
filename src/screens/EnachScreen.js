@@ -257,7 +257,8 @@ function getENACHConfig({
   return {
     deviceId: "WEBSH2",
     token,
-    returnUrl: "https://postman-echo.com/post",
+    returnUrl: "https://zavron.byts.in/v1/payment/enach/response",
+    // returnUrl: "https://postman-echo.com/post",
     responseHandler,
     paymentMode: "netBanking",
     customStyle: {
