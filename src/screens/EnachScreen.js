@@ -6,6 +6,7 @@ import { getAllQueryParams } from "../common/utils/url";
 import { Helmet } from "react-helmet";
 import { to } from "await-to-js";
 import { v4 as uuidV4 } from "uuid";
+import { LoadingIndicator } from "../common/components/LoadingIndicator";
 
 const ENACH_TOKEN_API = `https://zavron.byts.in/v1/payment/enach/token`;
 const MERCHANT_ID = "T596349";
@@ -58,9 +59,9 @@ const EnachScreen = () => {
     const queryData = getAllQueryParams();
     console.log("EnachScreen -> queryData", queryData);
 
-    const dataFromApp = window.Enach?.consumerData || {};
+    const dataFromApp = window.EnachData || {};
     setInitialFormData((oldValue) => ({
-      ...oldValue,
+      // ...oldValue,
       ...dataFromApp,
       ...queryData,
     }));
@@ -212,14 +213,14 @@ const EnachScreen = () => {
   React.useEffect(() => {
     setStatus(API_STATUS.LOADING);
     const jQueryWatcher = setInterval(() => {
-      if (window.$ && window.$.pnCheckout) {
+      if (window.$ && window.$.pnCheckout && !!initialFormData.accountNo) {
         clearInterval(jQueryWatcher);
         handleFinish();
       }
     }, 100);
 
     return () => clearInterval(jQueryWatcher);
-  }, [handleFinish]);
+  }, [handleFinish, initialFormData]);
 
   /**
    * TODO: Implement me!
@@ -255,6 +256,8 @@ const EnachScreen = () => {
         loading={status === API_STATUS.LOADING}
         onFinish={handleFinish}
       /> */}
+      {status === API_STATUS.LOADING && <LoadingIndicator />}
+
       {status === API_STATUS.REJECTED && (
         <p style={{ color: "red" }}>
           Some error occurred, please contact support
