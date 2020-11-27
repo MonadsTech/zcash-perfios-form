@@ -5,7 +5,7 @@ import { getAllQueryParams } from "../common/utils/url";
 // import { EnachUserForm } from "../modules/enach/EnachUserForm";
 import { Helmet } from "react-helmet";
 import { to } from "await-to-js";
-import { v4 as uuidV4 } from "uuid";
+// import { v4 as uuidV4 } from "uuid";
 import { LoadingIndicator } from "../common/components/LoadingIndicator";
 
 const ENACH_TOKEN_API = `https://zavron.byts.in/v1/payment/enach/token`;
