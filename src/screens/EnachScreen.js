@@ -11,6 +11,8 @@ import { LoadingIndicator } from "../common/components/LoadingIndicator";
 const ENACH_TOKEN_API = `https://zavron.byts.in/v1/payment/enach/token`;
 const MERCHANT_ID = "T596349";
 const INITIAL_VALUES = {
+  // txnId: uuidV4().split("-").join(""),
+  txnId: "0060w000004l4mLAAQ",
   consumerMobileNo: "7877523772",
   consumerEmailId: "rajatvijay5@gmail.com",
   accountNo: "919010053812087",
@@ -90,8 +92,9 @@ const EnachScreen = () => {
       console.log("handleFinish -> formValues", formValues);
       console.log("handleFinish -> formValues", initialFormData);
       // const txnId = "3ba0bd3a5c7d42908ee25dcb2f57e29b";
-      const txnId = uuidV4().split("-").join("");
+      // const txnId = uuidV4().split("-").join("");
       const {
+        txnId,
         accountNo,
         consumerMobileNo,
         consumerEmailId,
