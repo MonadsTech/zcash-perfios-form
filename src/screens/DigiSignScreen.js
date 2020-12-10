@@ -13,9 +13,9 @@ import { LoadingIndicator } from "../common/components/LoadingIndicator";
 const DigiSignScreen = () => {
   const [status, setStatus] = useState(API_STATUS.IDLE);
   const [initialData, setInitialData] = useState({
-    documentId: "DID201121001854309L9WTFDA1SEY7FF",
-    // mobileNum: "vpankaj1998@gmail.com",
-    mobileNum: "6355267815",
+    documentId: "DID20121015581735998W7OFWSAK2GEW",
+    mobileNum: "vpankaj1998@gmail.com",
+    // mobileNum: "6355267815",
   });
 
   /**
@@ -33,9 +33,6 @@ const DigiSignScreen = () => {
     console.log("DigiScreen -> queryData", queryData);
 
     const dataFromApp = window.consumerData || {};
-    reactNativePostMessage(
-      JSON.stringify({ result: "success", response: "h" })
-    );
 
     setInitialData((oldValue) => ({
       ...oldValue,
@@ -49,10 +46,16 @@ const DigiSignScreen = () => {
       environment: "sandbox",
       callback: function (response) {
         if (response.hasOwnProperty("error_code")) {
-          reactNativePostMessage({ result: "error", response });
+          reactNativePostMessage({
+            result: "error",
+            response: JSON.stringify(response),
+          });
           return console.log("error occurred in process");
         }
-        reactNativePostMessage({ result: "success", response });
+        reactNativePostMessage({
+          result: "success",
+          response: JSON.stringify(response),
+        });
         console.log("Signing completed successfully");
       },
       is_iframe: true,
@@ -63,9 +66,11 @@ const DigiSignScreen = () => {
       },
     };
 
+    console.log("digioOptions", digioOptions);
     var digio = new window.Digio(digioOptions); //options is the digio options constructor object.
     console.log("digio", digio);
     digio.init();
+    console.log("initialData", initialData);
 
     const { documentId, mobileNum } = initialData;
     digio.submit(documentId, mobileNum);
