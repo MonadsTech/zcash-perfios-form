@@ -46,16 +46,20 @@ const DigiSignScreen = () => {
       environment: "sandbox",
       callback: function (response) {
         if (response.hasOwnProperty("error_code")) {
-          reactNativePostMessage({
-            result: "error",
-            response: JSON.stringify(response),
-          });
+          reactNativePostMessage(
+            JSON.stringify({
+              result: "error",
+              response,
+            })
+          );
           return console.log("error occurred in process");
         }
-        reactNativePostMessage({
-          result: "success",
-          response: JSON.stringify(response),
-        });
+        reactNativePostMessage(
+          JSON.stringify({
+            result: "success",
+            response,
+          })
+        );
         console.log("Signing completed successfully");
       },
       is_iframe: true,
