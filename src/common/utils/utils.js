@@ -5,3 +5,21 @@ export const reactNativePostMessage = (...args) => {
     console.log("MessageForApp", ...args);
   }
 };
+
+/**
+ * format date to DD-MM-YYYY,
+ * @param string date
+ */
+export const formatDate = (date) => {
+  var dd = date.getDate();
+  var mm = date.getMonth() + 1;
+
+  if (dd < 10) {
+    dd = "0" + dd;
+  }
+  if (mm < 10) {
+    mm = "0" + mm;
+  }
+
+  return `${dd}-${mm}-${date.getFullYear()}`;
+};

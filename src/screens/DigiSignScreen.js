@@ -35,7 +35,7 @@ const DigiSignScreen = () => {
     const dataFromApp = window.consumerData || {};
 
     setInitialData((oldValue) => ({
-      ...oldValue,
+      // ...oldValue,
       ...dataFromApp,
       ...queryData,
     }));

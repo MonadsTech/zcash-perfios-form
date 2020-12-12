@@ -5,19 +5,31 @@ import { getAllQueryParams } from "../common/utils/url";
 // import { EnachUserForm } from "../modules/enach/EnachUserForm";
 import { Helmet } from "react-helmet";
 import { to } from "await-to-js";
-// import { v4 as uuidV4 } from "uuid";
+import { v4 as uuidV4 } from "uuid";
 import { LoadingIndicator } from "../common/components/LoadingIndicator";
+import { formatDate } from "../common/utils/utils";
 
 const ENACH_TOKEN_API = `https://zavron.byts.in/v1/payment/enach/token`;
 const MERCHANT_ID = "T596349";
+
+const startDate = new Date();
+const ld = new Date();
+const endDate = new Date(ld.setDate(ld.getDate() + 10));
+
 const INITIAL_VALUES = {
-  // txnId: uuidV4().split("-").join(""),
-  txnId: "0060w000004l4mLAAQ",
+  startDate: formatDate(startDate),
+  endDate: formatDate(endDate),
+
+  // txnId: "0060w000004l4mLAAQ",
+  optyId: "0060w000004l4mLAAQ",
   consumerMobileNo: "7877523772",
   consumerEmailId: "rajatvijay5@gmail.com",
   accountNo: "919010053812087",
   accountHolderName: "Rajat Vijay",
   ifscCode: "UTIB0000335",
+  maxAmount: 100000, //Loan Amount
+  amountType: "M",
+  frequency: "MNTH",
 };
 
 /**
@@ -63,7 +75,7 @@ const EnachScreen = () => {
 
     const dataFromApp = window.EnachData || {};
     setInitialFormData((oldValue) => ({
-      // ...oldValue,
+      ...oldValue,
       ...dataFromApp,
       ...queryData,
     }));
@@ -78,11 +90,15 @@ const EnachScreen = () => {
    * Orchestrate the main data flow
    * data from -> calling ENACH SDK
    * @param {{
+   *  optyId: string,
    *  consumerMobileNo: string,
    *  consumerEmailId: string,
    *  accountNo: string,
    *  accountHolderName: string,
    *  ifscCode: string
+   *  maxAmount: string|number
+   *  amountType: string,
+   *  frequency: string,
    * }} formValues
    * @returns {void}
    */
@@ -91,33 +107,53 @@ const EnachScreen = () => {
       const formValues = initialFormData;
       console.log("handleFinish -> formValues", formValues);
       console.log("handleFinish -> formValues", initialFormData);
-      // const txnId = "3ba0bd3a5c7d42908ee25dcb2f57e29b";
-      // const txnId = uuidV4().split("-").join("");
+      const txnId = uuidV4().split("-").join("");
+
       const {
-        txnId,
+        optyId,
         accountNo,
         consumerMobileNo,
         consumerEmailId,
         accountHolderName,
         ifscCode,
+        maxAmount,
+        amountType,
+        frequency,
+        startDate,
+        endDate,
       } = formValues;
       const token = await getTokenUsingFormData({
         txnId,
         accountNo,
         consumerMobileNo,
         consumerEmailId,
+        consumerId: optyId,
+        debitStartDate: startDate,
+        debitEndDate: endDate,
+        maxAmount,
+        amountType,
+        frequency,
       });
+
       const finalConfig = getENACHConfig({
         token,
         responseHandler,
+        optyId,
         consumerMobileNo,
         consumerEmailId,
-        bankCode: 9480,
+        // bankCode: 9480,
         accountNo,
         accountHolderName,
         ifscCode,
         txnId,
+        maxAmount,
+        amountType,
+        frequency,
+
+        startDate,
+        endDate,
       });
+
       if (token) {
         openENACHModal(finalConfig);
       }
@@ -139,6 +175,12 @@ const EnachScreen = () => {
     accountNo,
     consumerEmailId,
     consumerMobileNo,
+    consumerId,
+    debitStartDate,
+    debitEndDate,
+    maxAmount,
+    amountType,
+    frequency,
   }) => {
     setStatus(API_STATUS.LOADING);
 
@@ -148,12 +190,12 @@ const EnachScreen = () => {
       account_number: accountNo,
       email_id: consumerEmailId,
       mobile_number: consumerMobileNo,
-      debit_start_date: "",
-      consumer_id: "",
-      debit_end_date: "",
-      max_amount: "",
-      amount_type: "",
-      frequency: "",
+      debit_start_date: debitStartDate,
+      debit_end_date: debitEndDate,
+      consumer_id: consumerId,
+      max_amount: `${maxAmount}`,
+      amount_type: amountType,
+      frequency: frequency,
       card_number: "",
       exp_month: "",
       exp_year: "",
@@ -187,8 +229,8 @@ const EnachScreen = () => {
       tarCall: false,
       features: {
         // showPGResponseMsg: true,
-        enableAbortResponse: true,
-        enableNewWindowFlow: false,
+        // enableAbortResponse: true,
+        // enableNewWindowFlow: false,
         // enableExpressPay: false,
         // payDetailsAtMerchantEnd: true,
         // enableSI: false,
@@ -199,6 +241,12 @@ const EnachScreen = () => {
         // expandSIDetails: false,
         // hideSIConfirmation: false,
         // showSIResponseMsg: false,
+        showPGResponseMsg: true,
+        enableAbortResponse: true,
+        enableNewWindowFlow: false,
+        enableExpressPay: true,
+        siDetailsAtMerchantEnd: true,
+        enableSI: true,
       },
       consumerData: config,
     };
@@ -275,13 +323,19 @@ export { EnachScreen };
 function getENACHConfig({
   token,
   responseHandler,
+  optyId,
   consumerMobileNo,
   consumerEmailId,
-  bankCode,
+  // bankCode,
   accountNo,
   accountHolderName,
   ifscCode,
   txnId,
+  maxAmount,
+  startDate,
+  endDate,
+  amountType,
+  frequency,
 }) {
   return {
     deviceId: "WEBSH2",
@@ -289,7 +343,7 @@ function getENACHConfig({
     returnUrl: "https://zavron.byts.in/v1/payment/enach/response",
     // returnUrl: "https://postman-echo.com/post",
     responseHandler,
-    paymentMode: "netBanking",
+    paymentMode: "all",
     customStyle: {
       PRIMARY_COLOR_CODE: "#FFFFFF",
       SECONDARY_COLOR_CODE: "#001F79",
@@ -301,6 +355,7 @@ function getENACHConfig({
     merchantMsg: "",
     disclaimerMsg: "",
     merchantId: MERCHANT_ID,
+    consumerId: optyId,
     consumerMobileNo,
     consumerEmailId,
     txnId,
@@ -314,11 +369,16 @@ function getENACHConfig({
       },
     ],
     cartDescription: "",
-    bankCode, // AXIS: 9480
+    // bankCode, // AXIS: 9480
     accountNo,
     accountType: "Saving",
     accountHolderName,
     ifscCode,
+    maxAmount,
+    amountType,
+    frequency,
+    debitStartDate: startDate,
+    debitEndDate: endDate,
 
     // TODO: Check if this is required!
     currency: "INR",
