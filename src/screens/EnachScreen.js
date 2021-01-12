@@ -67,7 +67,8 @@ const getToken = (payload) => {
 // };
 
 const EnachScreen = () => {
-  const [initialFormData, setInitialFormData] = useState(INITIAL_VALUES);
+  const [initialFormData, setInitialFormData] = useState(null);
+  // const [initialFormData, setInitialFormData] = useState(INITIAL_VALUES);
   console.log("initialFormData", initialFormData);
   const [status, setStatus] = useState(API_STATUS.IDLE);
 
@@ -90,7 +91,7 @@ const EnachScreen = () => {
 
     const dataFromApp = window.EnachData || {};
     setInitialFormData((oldValue) => ({
-      ...oldValue,
+      ...INITIAL_VALUES,
       ...dataFromApp,
       ...queryData,
     }));
@@ -318,11 +319,13 @@ const EnachScreen = () => {
           src="https://www.paynimo.com/paynimocheckout/server/lib/checkout.js"
         ></script>
       </Helmet>
-      <EnachUserForm
-        initialValues={initialFormData}
-        loading={status === API_STATUS.LOADING}
-        onFinish={handleFinish}
-      />
+      {initialFormData && (
+        <EnachUserForm
+          initialValues={initialFormData}
+          loading={status === API_STATUS.LOADING}
+          onFinish={handleFinish}
+        />
+      )}
       {status === API_STATUS.LOADING && <LoadingIndicator />}
 
       {status === API_STATUS.REJECTED && (
