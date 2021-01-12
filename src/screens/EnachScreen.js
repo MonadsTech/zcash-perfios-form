@@ -51,6 +51,20 @@ const getToken = (payload) => {
     .then((response) => response.payload.token);
 };
 
+// const a = {
+//   accountHolderName: "BHARANE BHARANE",
+//   accountNo: "003101624719",
+//   amountType: "M",
+//   consumerEmailId: "smo@zavronfinserv.com",
+//   consumerMobileNo: "7020196206",
+//   endDate: "22-01-2021",
+//   frequency: "MNTH",
+//   ifscCode: null,
+//   maxAmount: 100000,
+//   optyId: "0060w000005DnhTAAS",
+//   startDate: "12-01-2021",
+// };
+
 const EnachScreen = () => {
   const [initialFormData, setInitialFormData] = useState(INITIAL_VALUES);
   console.log("initialFormData", initialFormData);
@@ -149,7 +163,6 @@ const EnachScreen = () => {
         maxAmount,
         amountType,
         frequency,
-
         startDate,
         endDate,
       });
@@ -264,9 +277,11 @@ const EnachScreen = () => {
   React.useEffect(() => {
     setStatus(API_STATUS.LOADING);
     const jQueryWatcher = setInterval(() => {
-      if (window.$ && window.$.pnCheckout && !!initialFormData.accountNo) {
-        clearInterval(jQueryWatcher);
-        handleFinish();
+      if (window.$) {
+        if (window.$.pnCheckout && !!initialFormData.accountNo) {
+          clearInterval(jQueryWatcher);
+          handleFinish();
+        }
       }
     }, 100);
 
@@ -337,6 +352,7 @@ function getENACHConfig({
   amountType,
   frequency,
 }) {
+  console.log("ifscCode", ifscCode);
   return {
     deviceId: "WEBSH2",
     token,
@@ -373,7 +389,7 @@ function getENACHConfig({
     accountNo,
     accountType: "Saving",
     accountHolderName,
-    ifscCode,
+    ...(!!ifscCode && { ifscCode }),
     maxAmount,
     amountType,
     frequency,

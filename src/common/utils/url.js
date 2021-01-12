@@ -20,9 +20,13 @@ export function getAllQueryParams() {
     if (pair[0] === "") {
       return pairs;
     }
+
+    let value = pair[1] === "null" ? null : pair[1];
+    value = pair[1] === "false" ? false : value;
+
     pairs = {
       ...pairs,
-      [pair[0]]: pair[1],
+      [pair[0]]: value,
     };
   }
   return pairs;
