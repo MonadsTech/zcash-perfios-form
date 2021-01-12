@@ -8,6 +8,7 @@ import { to } from "await-to-js";
 import { v4 as uuidV4 } from "uuid";
 import { LoadingIndicator } from "../common/components/LoadingIndicator";
 import { formatDate } from "../common/utils/utils";
+import { EnachUserForm } from "../modules/enach/EnachUserForm";
 
 const ENACH_TOKEN_API = `https://zavron.byts.in/v1/payment/enach/token`;
 const MERCHANT_ID = "T596349";
@@ -275,12 +276,12 @@ const EnachScreen = () => {
   };
 
   React.useEffect(() => {
-    setStatus(API_STATUS.LOADING);
+    // setStatus(API_STATUS.LOADING);
     const jQueryWatcher = setInterval(() => {
       if (window.$) {
         if (window.$.pnCheckout && !!initialFormData.accountNo) {
           clearInterval(jQueryWatcher);
-          handleFinish();
+          // handleFinish();
         }
       }
     }, 100);
@@ -317,11 +318,11 @@ const EnachScreen = () => {
           src="https://www.paynimo.com/paynimocheckout/server/lib/checkout.js"
         ></script>
       </Helmet>
-      {/* <EnachUserForm
+      <EnachUserForm
         initialValues={initialFormData}
         loading={status === API_STATUS.LOADING}
         onFinish={handleFinish}
-      /> */}
+      />
       {status === API_STATUS.LOADING && <LoadingIndicator />}
 
       {status === API_STATUS.REJECTED && (
