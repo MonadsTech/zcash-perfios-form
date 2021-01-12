@@ -3,6 +3,7 @@ import { Button, Form, Input } from "antd";
 
 const EnachUserForm = (props) => {
   const { onFinish, loading, initialValues } = props;
+  console.log("Enach user form initialValues", initialValues);
 
   return (
     <Form

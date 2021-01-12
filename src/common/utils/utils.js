@@ -23,3 +23,10 @@ export const formatDate = (date) => {
 
   return `${dd}-${mm}-${date.getFullYear()}`;
 };
+
+export const makeQstring = (a) => {
+  return Object.keys(a).reduce(
+    (q, key, i) => `${q}${key}=${a[key]}${i === a.length - 1 ? "" : "&"}`,
+    "?"
+  );
+};

@@ -66,6 +66,9 @@ const getToken = (payload) => {
 //   startDate: "12-01-2021",
 // };
 
+// https://zavron-app.netlify.app/enach?accountHolderName=BHARANE BHARANE&accountNo=003101624719&amountType=M&consumerEmailId=smo@zavronfinserv.com&consumerMobileNo=7020196206&endDate=22-01-2021&frequency=MNTH&ifscCode=null&maxAmount=100000&optyId=0060w000005DnhTAAS&startDate=12-01-2021
+// https: //zavron-app.netlify.app/enach?accountHolderName=BHARANEBHARANE&accountNo=00310162[…]unt=100000&optyId=0060w000005DnhTAAS&startDate=12-01-2021
+
 const EnachScreen = () => {
   const [initialFormData, setInitialFormData] = useState(null);
   // const [initialFormData, setInitialFormData] = useState(INITIAL_VALUES);
@@ -120,9 +123,10 @@ const EnachScreen = () => {
    */
   const handleFinish = React.useCallback(
     async (formValuesForm) => {
-      const formValues = initialFormData;
-      console.log("handleFinish -> formValues", formValues);
-      console.log("handleFinish -> formValues", initialFormData);
+      // const formValues = initialFormData;
+      const formValues = { ...initialFormData, ...formValuesForm };
+      console.log("handleFinish -> formValues mixed", formValues);
+      console.log("handleFinish -> formValues initial", initialFormData);
       const txnId = uuidV4().split("-").join("");
 
       const {
