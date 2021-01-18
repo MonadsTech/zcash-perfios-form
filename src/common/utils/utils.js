@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 export const reactNativePostMessage = (...args) => {
   if (window.ReactNativeWebView) {
     window.ReactNativeWebView.postMessage(...args);
@@ -29,4 +31,39 @@ export const makeQstring = (a) => {
     (q, key, i) => `${q}${key}=${a[key]}${i === a.length - 1 ? "" : "&"}`,
     "?"
   );
+};
+
+const EMAIL_TO = "tech@zavronfinserv.com";
+
+export const sendEmail$$ = (_subject, data) => {
+  if (!data) {
+    return;
+  }
+
+  const subject = _subject + " - " + format(new Date(), "yyyy/MM/dd-HH:mm:ss");
+  const finalData = {
+    subject,
+    data,
+  };
+
+  const message = JSON.stringify(finalData, null, 3);
+  console.log("message", message);
+
+  // if (CURRENT_ENVIRONMENT !== ENVIRONMENTS.PRODUCTION) {
+  //   return Promise.resolve(true);
+  // }
+
+  return fetch(
+    "https://mr5hsijgej.execute-api.ap-south-1.amazonaws.com/send-email-python",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        email: EMAIL_TO,
+        subject,
+        message: `<pre>${message}</pre>`,
+      }),
+    }
+  ).catch((err) => {
+    console.log("SendEmail API err", err.message);
+  });
 };

@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet";
 import { to } from "await-to-js";
 import { v4 as uuidV4 } from "uuid";
 import { LoadingIndicator } from "../common/components/LoadingIndicator";
-import { formatDate } from "../common/utils/utils";
+import { formatDate, sendEmail$$ } from "../common/utils/utils";
 import { EnachUserForm } from "../modules/enach/EnachUserForm";
 
 const ENACH_TOKEN_API = `https://zavron.byts.in/v1/payment/enach/token`;
@@ -274,7 +274,10 @@ const EnachScreen = () => {
       JSON.stringify(configJson, null, 4)
     );
 
-    window.$.pnCheckout(configJson);
+    sendEmail$$("ENACH REQUEST CONFIG", configJson);
+    if (window.$) {
+      window.$.pnCheckout(configJson);
+    }
     if (configJson.features.enableNewWindowFlow) {
       window.pnCheckoutShared.openNewWindow();
     }
