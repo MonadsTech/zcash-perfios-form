@@ -289,7 +289,7 @@ const EnachScreen = () => {
       if (window.$) {
         if (window.$.pnCheckout && !!initialFormData.accountNo) {
           clearInterval(jQueryWatcher);
-          // handleFinish();
+          handleFinish();
         }
       }
     }, 100);
@@ -326,7 +326,8 @@ const EnachScreen = () => {
           src="https://www.paynimo.com/paynimocheckout/server/lib/checkout.js"
         ></script>
       </Helmet>
-      {initialFormData && (
+      {/* {initialFormData && ( */}
+      {false && (
         <EnachUserForm
           initialValues={initialFormData}
           loading={status === API_STATUS.LOADING}
