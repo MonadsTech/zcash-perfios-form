@@ -372,12 +372,12 @@ function getENACHConfig({
     // returnUrl: "https://postman-echo.com/post",
     responseHandler,
     paymentMode: "all",
-    customStyle: {
-      PRIMARY_COLOR_CODE: "#FFFFFF",
-      SECONDARY_COLOR_CODE: "#001F79",
-      BUTTON_COLOR_CODE_1: "#000F3D",
-      BUTTON_COLOR_CODE_2: "#FFFFFF",
-    },
+    // customStyle: {
+    //   PRIMARY_COLOR_CODE: "#FFFFFF",
+    //   SECONDARY_COLOR_CODE: "#001F79",
+    //   BUTTON_COLOR_CODE_1: "#000F3D",
+    //   BUTTON_COLOR_CODE_2: "#FFFFFF",
+    // },
     merchantLogoUrl:
       "https://res.cloudinary.com/dhoiqmk4x/image/upload/v1595829219/ZCash_Logo_1_n2cdan.png", //provided merchant logo will be displayed
     merchantMsg: "",
