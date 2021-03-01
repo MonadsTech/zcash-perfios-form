@@ -283,19 +283,19 @@ const EnachScreen = () => {
     }
   };
 
-  // React.useEffect(() => {
-  //   // setStatus(API_STATUS.LOADING);
-  //   const jQueryWatcher = setInterval(() => {
-  //     if (window.$) {
-  //       if (window.$.pnCheckout && !!initialFormData.accountNo) {
-  //         clearInterval(jQueryWatcher);
-  //         handleFinish();
-  //       }
-  //     }
-  //   }, 100);
+  React.useEffect(() => {
+    // setStatus(API_STATUS.LOADING);
+    const jQueryWatcher = setInterval(() => {
+      if (window.$) {
+        if (window.$.pnCheckout && !!initialFormData.accountNo) {
+          clearInterval(jQueryWatcher);
+          // handleFinish();
+        }
+      }
+    }, 100);
 
-  //   return () => clearInterval(jQueryWatcher);
-  // }, [handleFinish, initialFormData]);
+    return () => clearInterval(jQueryWatcher);
+  }, [handleFinish, initialFormData]);
 
   /**
    * TODO: Implement me!
@@ -326,8 +326,8 @@ const EnachScreen = () => {
           src="https://www.paynimo.com/paynimocheckout/server/lib/checkout.js"
         ></script>
       </Helmet>
-      {/* {initialFormData && ( */}
-      {false && (
+      {/* {false && ( */}
+      {initialFormData && (
         <EnachUserForm
           initialValues={initialFormData}
           loading={status === API_STATUS.LOADING}
