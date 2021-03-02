@@ -33,6 +33,12 @@ const INITIAL_VALUES = {
   frequency: "MNTH",
 };
 
+// TODO: Empty this hard coded value, added to test HDFC bank in UAT mode
+const HARD_CODED = {
+  maxAmount: 10,
+  frequency: "MNTH",
+};
+
 /**
  * Calls the API to fetch token,
  * using data from app, default config and form data
@@ -153,6 +159,7 @@ const EnachScreen = () => {
         maxAmount,
         amountType,
         frequency,
+        ...HARD_CODED,
       });
 
       const finalConfig = getENACHConfig({
@@ -171,6 +178,7 @@ const EnachScreen = () => {
         frequency,
         startDate,
         endDate,
+        ...HARD_CODED,
       });
 
       if (token) {
@@ -312,7 +320,7 @@ const EnachScreen = () => {
         padding: "50px 20px",
       }}
     >
-      <h1>Updated</h1>
+      <h1>Updated V2</h1>
       <Helmet>
         <meta
           name="viewport"
@@ -403,9 +411,9 @@ function getENACHConfig({
     accountType: "Saving",
     accountHolderName,
     ...(!!ifscCode && { ifscCode }),
-    maxAmount: 10, // TODO: Remove this hard coded value, added to test HDFC bank in UAT mode
+    maxAmount,
     amountType,
-    frequency: "MNTH", // TODO: Remove this hard coded value, added to test HDFC bank in UAT mode
+    frequency,
     debitStartDate: startDate,
     debitEndDate: endDate,
 
