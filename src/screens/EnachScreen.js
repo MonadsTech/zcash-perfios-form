@@ -312,6 +312,7 @@ const EnachScreen = () => {
         padding: "50px 20px",
       }}
     >
+      <h1>Updated</h1>
       <Helmet>
         <meta
           name="viewport"
