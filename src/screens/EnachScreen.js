@@ -402,9 +402,9 @@ function getENACHConfig({
     accountType: "Saving",
     accountHolderName,
     ...(!!ifscCode && { ifscCode }),
-    maxAmount,
+    maxAmount: 10, // TODO: Remove this hard coded value, added to test HDFC bank in UAT mode
     amountType,
-    frequency,
+    frequency: "MNTH", // TODO: Remove this hard coded value, added to test HDFC bank in UAT mode
     debitStartDate: startDate,
     debitEndDate: endDate,
 
